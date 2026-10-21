@@ -1,0 +1,70 @@
+---
+import { conBase } from '../../lib/rutas';
+import { getCollection, render } from 'astro:content';
+import LayoutBase from '../../layouts/LayoutBase.astro';
+import EncabezadoPagina from '../../components/EncabezadoPagina.astro';
+import { fechaCorta } from '../../data/prensa';
+
+/** Genera una página por cada entrada de prensa: /prensa/<id>/. */
+export async function getStaticPaths() {
+  const entradas = await getCollection('prensa');
+  return entradas.map((entrada) => ({ params: { id: entrada.id }, props: { entrada } }));
+}
+
+const { entrada } = Astro.props;
+const { Content } = await render(entrada);
+const { tipo, fecha, titulo } = entrada.data;
+
+// Texto y color según el tipo de entrada.
+const etiqueta = { comunicado: 'Comunicado de prensa', aparicion: 'Aparición en medios', evento: 'Evento' }[tipo];
+const migas = [{ etiqueta: 'Prensa y Novedades', href: conBase('/prensa/') }];
+---
+
+<LayoutBase
+  titulo={titulo}
+  descripcion={tipo === 'comunicado'
+    ? entrada.data.extracto
+    : `${etiqueta} del IPPSE: ${titulo}.`}
+>
+  <EncabezadoPagina titulo={titulo} migas={migas} bajada={tipo === 'comunicado' ? entrada.data.extracto : undefined}>
+    <p class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold uppercase tracking-wide">
+      <span class="rounded bg-py-azul px-2 py-1 text-white">{etiqueta}</span>
+      <time datetime={fecha} class="text-gray-500">{fechaCorta(fecha)}</time>
+      {tipo === 'aparicion' && <span class="text-py-azul">{entrada.data.medio}</span>}
+      {tipo === 'evento' && (
+        <>
+          <span class="text-py-rojo">{entrada.data.tipoEvento}</span>
+          <span class="text-gray-500">{entrada.data.lugar}</span>
+        </>
+      )}
+    </p>
+  </EncabezadoPagina>
+
+  <div class="mx-auto max-w-3xl px-4 py-10 sm:px-6 md:py-14 lg:px-8">
+    <article
+      class="prose prose-gray max-w-none break-words
+             prose-headings:font-serif prose-h2:mt-10 prose-h2:text-2xl prose-h2:scroll-mt-6 prose-h2:first:mt-0
+             prose-a:text-py-azul prose-strong:text-gray-900"
+    >
+      <Content />
+    </article>
+
+    {tipo === 'aparicion' && entrada.data.url && (
+      <p class="mt-8">
+        <a
+          href={entrada.data.url}
+          target="_blank"
+          rel="noopener"
+          class="inline-flex min-h-11 items-center rounded bg-py-azul px-5 font-semibold text-white no-underline hover:bg-py-azul-oscuro"
+        >
+          Ver la nota en {entrada.data.medio}
+          <span class="sr-only"> (abre en una pestaña nueva)</span>
+        </a>
+      </p>
+    )}
+
+    <p class="mt-10 border-t border-gray-200 pt-6">
+      <a href={conBase('/prensa/')} class="font-semibold text-py-azul no-underline hover:underline">← Volver a Prensa y Novedades</a>
+    </p>
+  </div>
+</LayoutBase>

@@ -1,0 +1,144 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+@import '@fontsource/source-serif-4/latin-600.css';
+@import '@fontsource/source-serif-4/latin-700.css';
+@import '@fontsource-variable/source-sans-3/wght.css';
+
+/* Alto aproximado del header fijo, usado por scroll-padding-top.
+   Se ajusta por breakpoint para coincidir con el tamaño del logo. */
+:root {
+  --alto-header: 5.75rem;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --alto-header: 6.25rem;
+  }
+}
+
+/* Tokens de identidad IPPSE: fondos blanco/gris, acentos rojo y azul de la bandera paraguaya */
+@theme {
+  --font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Source Sans 3 Variable', 'Segoe UI', Roboto, Arial, sans-serif;
+
+  --color-py-rojo: #d52b1e;
+  --color-py-rojo-oscuro: #a8211a;
+  --color-py-azul: #0038a8;
+  --color-py-azul-oscuro: #00297a;
+  --color-py-azul-claro: #e8eefa;
+}
+
+@layer base {
+  html {
+    @apply bg-gray-50 text-gray-800 antialiased;
+    /* Deja libre el header fijo al saltar a un ancla (#seccion), para que el
+       título destino no quede tapado. Ver --alto-header en el Header. */
+    scroll-padding-top: calc(var(--alto-header, 6rem) + 0.5rem);
+  }
+
+  body {
+    @apply bg-gray-50 font-sans;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif text-gray-900;
+  }
+
+  a {
+    @apply text-py-azul underline-offset-2 hover:text-py-azul-oscuro;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-py-azul;
+  }
+}
+
+/* Menú móvil: panel lateral derecho sobre un <dialog> modal */
+.menu-movil {
+  position: fixed;
+  inset: 0 0 0 auto;
+  margin: 0;
+  padding: 0;
+  width: min(22rem, 100%);
+  max-width: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+  border: 0;
+  background: var(--color-white);
+  box-shadow: -8px 0 24px rgb(0 0 0 / 0.15);
+}
+
+.menu-movil::backdrop {
+  background: rgb(17 24 39 / 0.55);
+}
+
+.menu-movil[open] {
+  animation: menu-entrar 200ms ease-out;
+}
+
+@keyframes menu-entrar {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+/* Bloquea el scroll de la página mientras el menú está abierto */
+html:has(.menu-movil[open]) {
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-movil[open] {
+    animation: none;
+  }
+}
+
+/* Visor: tablas anchas con desplazamiento propio */
+.documento .tabla-desplazable {
+  @apply my-6 overflow-x-auto rounded border border-gray-200;
+}
+
+.documento .tabla-desplazable table {
+  @apply min-w-full text-sm whitespace-nowrap;
+}
+
+/* Impresión: solo el documento */
+@media print {
+  header, footer, .ticker, [data-indice] {
+    display: none !important;
+  }
+
+  .documento .tabla-desplazable {
+    overflow: visible;
+  }
+
+  .documento .tabla-desplazable table {
+    white-space: normal;
+  }
+}
+
+/* Formulario de contacto: "Especialidad" solo en la pestaña de membresía */
+.formulario-contacto:not(:has(input[name='tipo'][value='membresia']:checked)) .solo-membresia {
+  display: none;
+}
+
+/* Cinta de alertas: desplazamiento continuo, se pausa al pasar el puntero o enfocar */
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.ticker-pista {
+  animation: ticker 40s linear infinite;
+}
+
+.ticker:hover .ticker-pista,
+.ticker:focus-within .ticker-pista {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-pista {
+    animation: none;
+  }
+}

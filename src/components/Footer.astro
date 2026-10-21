@@ -1,0 +1,55 @@
+---
+import { conBase } from '../lib/rutas';
+import { navegacionPrincipal } from '../data/navegacion';
+import { descripcionCorta } from '../data/institucion';
+import { contacto } from '../data/contacto';
+
+const anio = new Date().getFullYear();
+---
+
+<footer class="mt-16 border-t-4 border-py-azul bg-gray-900 text-gray-300">
+  <div class="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3 lg:px-8">
+    <section aria-labelledby="pie-institucion">
+      <h2 id="pie-institucion" class="font-serif text-lg font-semibold text-white">IPPSE</h2>
+      <p class="mt-3 text-sm leading-relaxed">
+        Instituto de Profesionales Paraguayos del Sector Eléctrico. {descripcionCorta}
+      </p>
+      <p class="mt-4 text-xs font-semibold uppercase tracking-widest text-gray-400">
+        Promoviendo la soberanía energética de Paraguay
+      </p>
+    </section>
+
+    <nav aria-labelledby="pie-navegacion">
+      <h2 id="pie-navegacion" class="font-serif text-lg font-semibold text-white">Secciones</h2>
+      <ul class="mt-3 space-y-2 text-sm">
+        {[...navegacionPrincipal, { etiqueta: 'Documentos institucionales', href: conBase('/institucional/') }].map(({ etiqueta, href }) => (
+          <li><a href={href} class="inline-block py-1 text-gray-300 hover:text-white hover:underline">{etiqueta}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <section aria-labelledby="pie-contacto">
+      <h2 id="pie-contacto" class="font-serif text-lg font-semibold text-white">Contacto</h2>
+      <address class="mt-3 space-y-1 text-sm not-italic">
+        <p>{contacto.ciudad}</p>
+        <p><a href={`mailto:${contacto.email}`} class="text-gray-300 hover:text-white hover:underline">{contacto.email}</a></p>
+        <p><a href={`tel:${contacto.telefono.replace(/\s/g, '')}`} class="text-gray-300 hover:text-white hover:underline">{contacto.telefono}</a></p>
+      </address>
+    </section>
+  </div>
+
+  <div class="border-t border-gray-700">
+    <div class="mx-auto flex max-w-7xl flex-col items-center gap-2 px-4 py-4 text-center text-xs text-gray-400 sm:px-6 lg:px-8">
+      <p>© {anio} IPPSE · Instituto de Profesionales Paraguayos del Sector Eléctrico. Todos los derechos reservados.</p>
+    </div>
+  </div>
+
+  <div class="border-t border-white/10 pb-5 pt-2 text-center text-xs">
+    <a
+      class="text-[0.75rem] text-white underline"
+      href="https://osbgx.dev?utm_source=ippse&utm_medium=referral&utm_campaign=footer"
+      target="_blank"
+      rel="noopener"
+    >© osbgx.dev — Desarrollo web</a>
+  </div>
+</footer>

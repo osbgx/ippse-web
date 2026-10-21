@@ -1,0 +1,88 @@
+---
+import { conBase } from '../lib/rutas';
+import { Icon } from 'astro-icon/components';
+import { getEntry, render } from 'astro:content';
+import LayoutBase from '../layouts/LayoutBase.astro';
+import EncabezadoPagina from '../components/EncabezadoPagina.astro';
+import { pdfConstitucion } from '../data/documentos';
+
+const documento = await getEntry('institucional', 'constitucion');
+if (!documento) throw new Error('Falta src/content/institucional/constitucion.md');
+
+const { Content, headings } = await render(documento);
+// Cada sección del documento (Constitución, Estatutos, Código de Ética...) es un H2.
+const secciones = headings.filter((h) => h.depth === 2);
+---
+
+<LayoutBase
+  titulo="Institucional"
+  descripcion="Constitución, Acta de constitución, Estatutos, Reglamento Interno y Código de Ética del IPPSE."
+>
+  <EncabezadoPagina
+    titulo="Institucional"
+    migas={[{ etiqueta: 'Nosotros', href: conBase('/nosotros/') }]}
+    bajada="Documentos que establecen la organización, el funcionamiento y los principios del Instituto."
+  />
+
+  <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 md:py-12 lg:px-8">
+    <!-- Acceso al PDF del acta fundacional -->
+    <div class="mb-8 flex flex-col items-start justify-between gap-4 rounded border border-gray-200 border-l-4 border-l-py-rojo bg-gray-50 p-5 sm:flex-row sm:items-center sm:p-6">
+      <div>
+        <h2 class="font-serif text-lg font-semibold text-gray-900">Acta de Constitución</h2>
+        <p class="mt-1 text-sm text-gray-600">
+          Documento fundacional del IPPSE en su versión oficial (PDF, {pdfConstitucion.peso}).
+        </p>
+      </div>
+      <a
+        href={pdfConstitucion.href}
+        target="_blank"
+        rel="noopener"
+        class="inline-flex min-h-11 shrink-0 items-center gap-2 rounded bg-py-rojo px-6 py-3 font-semibold text-white no-underline hover:bg-py-rojo-oscuro"
+      >
+        <Icon name="lucide:download" class="h-4 w-4" aria-hidden="true" />
+        Descargar PDF
+        <span class="sr-only">(abre en una pestaña nueva)</span>
+      </a>
+    </div>
+
+    <!-- Acceso directo a cada documento -->
+    <section aria-labelledby="docs-titulo">
+      <h2 id="docs-titulo" class="sr-only">Documentos institucionales</h2>
+      <ul class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-5">
+        {secciones.map(({ slug, text }) => (
+          <li>
+            <a href={`#${slug}`} class="group flex h-full flex-col rounded border border-gray-200 border-l-4 border-l-py-azul bg-white p-3 no-underline shadow-sm hover:border-l-py-rojo sm:p-4">
+              <span class="text-xs font-semibold uppercase tracking-wide text-gray-500">Documento</span>
+              <span class="mt-1 font-serif text-base font-semibold leading-snug text-gray-900 group-hover:text-py-azul sm:text-lg">{text}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <div class="mt-8 grid gap-10 md:mt-12 lg:grid-cols-[16rem_1fr]">
+      <aside class="hidden lg:sticky lg:top-6 lg:block lg:self-start" aria-labelledby="indice-titulo">
+        <h2 id="indice-titulo" class="font-serif text-sm font-semibold uppercase tracking-wide text-gray-500">Índice</h2>
+        <nav aria-labelledby="indice-titulo">
+          <ol class="mt-3 space-y-1 border-l border-gray-200 text-sm">
+            {secciones.map(({ slug, text }) => (
+              <li>
+                <a href={`#${slug}`} class="-ml-px block border-l-2 border-transparent py-1 pl-4 text-gray-700 no-underline hover:border-py-rojo hover:text-py-azul">
+                  {text}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </aside>
+
+      <article
+        class="prose prose-gray max-w-none break-words rounded border border-gray-200 bg-white px-4 py-6 shadow-sm sm:p-10
+               prose-headings:font-serif prose-h2:mt-12 prose-h2:text-2xl md:prose-h2:mt-16 md:prose-h2:text-3xl prose-h2:scroll-mt-6 prose-h2:border-b-2 prose-h2:border-py-azul prose-h2:pb-2
+               prose-h2:first:mt-0 prose-a:text-py-azul prose-hr:hidden prose-strong:text-gray-900"
+      >
+        <Content />
+      </article>
+    </div>
+  </div>
+</LayoutBase>

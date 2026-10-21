@@ -1,0 +1,123 @@
+---
+import { conBase } from '../lib/rutas';
+import { Icon } from 'astro-icon/components';
+import LayoutBase from '../layouts/LayoutBase.astro';
+import { categorias, fechaLegible, publicacionesOrdenadas } from '../data/publicaciones';
+import { baseDocumentos, repoDocumentos, cdnMarked, cdnDomPurify } from '../data/visor';
+
+// Metadatos del índice para mostrar título, fecha y autor sin esperar al documento.
+const metadatos = Object.fromEntries(
+  publicacionesOrdenadas.map((p) => [
+    p.id,
+    {
+      titulo: p.titulo,
+      categoria: categorias[p.categoria],
+      fecha: p.fecha,
+      fechaLegible: fechaLegible(p.fecha),
+      autor: p.autor,
+      pdf: p.pdf,
+    },
+  ]),
+);
+
+const config = { baseDocumentos, repoDocumentos, cdnMarked, cdnDomPurify, metadatos };
+---
+
+<LayoutBase titulo="Documento" descripcion="Visor de documentos oficiales e informes técnicos del IPPSE.">
+  <!-- Contenido cargado en el cliente: el índice /publicaciones/ es la página indexable -->
+  <meta slot="head" name="robots" content="noindex, follow" />
+
+  <div id="visor" data-config={JSON.stringify(config)}>
+    <!-- Encabezado del documento -->
+    <div class="border-b border-gray-200 bg-white">
+      <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 md:py-10 lg:px-8">
+        <nav aria-label="Migas de pan" class="text-sm text-gray-500 print:hidden">
+          <ol class="flex flex-wrap items-center gap-2">
+            <li><a href={conBase('/')}>Inicio</a></li>
+            <li aria-hidden="true">/</li>
+            <li><a href={conBase('/publicaciones/')}>Informes y Publicaciones</a></li>
+            <li aria-hidden="true">/</li>
+            <li aria-current="page" class="text-gray-700">Documento</li>
+          </ol>
+        </nav>
+        <p class="mt-4 hidden flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold uppercase tracking-wide" data-meta>
+          <span class="text-py-rojo" data-meta-categoria></span>
+          <span class="text-gray-300" aria-hidden="true">|</span>
+          <time class="text-gray-500" data-meta-fecha></time>
+        </p>
+        <h1 class="mt-3 border-l-4 border-py-rojo pl-4 text-2xl font-bold leading-tight break-words sm:text-3xl md:text-4xl" data-titulo>
+          Documento oficial
+        </h1>
+        <p class="mt-3 hidden pl-5 text-gray-600" data-meta-autor></p>
+
+        <div class="mt-6 hidden flex-wrap gap-3 print:hidden" data-acciones>
+          <a href="#" class="hidden min-h-11 items-center gap-2 rounded bg-py-rojo px-4 text-sm font-semibold text-white no-underline hover:bg-py-rojo-oscuro" data-pdf target="_blank" rel="noopener">
+            <Icon name="lucide:download" class="h-4 w-4" aria-hidden="true" />
+            Ver PDF oficial
+            <span class="sr-only">(abre en una pestaña nueva)</span>
+          </a>
+          <button type="button" class="inline-flex min-h-11 items-center gap-2 rounded border border-gray-300 bg-white px-4 text-sm font-semibold text-gray-700 hover:border-py-azul hover:text-py-azul" data-imprimir>
+            <Icon name="lucide:printer" class="h-4 w-4" aria-hidden="true" />
+            Imprimir / PDF
+          </button>
+          <a href="#" class="inline-flex min-h-11 items-center gap-2 rounded border border-gray-300 bg-white px-4 text-sm font-semibold text-gray-700 no-underline hover:border-py-azul hover:text-py-azul" data-fuente target="_blank" rel="noopener">
+            Ver fuente en GitHub
+            <span class="sr-only">(abre en una pestaña nueva)</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 md:py-12 lg:px-8">
+      <!-- Estado: cargando -->
+      <div role="status" aria-live="polite" class="flex flex-col items-center justify-center gap-4 rounded border border-gray-200 bg-white px-6 py-16 text-center" data-estado="cargando" data-display="flex">
+        <span class="h-10 w-10 rounded-full border-4 border-py-azul-claro border-t-py-azul motion-safe:animate-spin" aria-hidden="true"></span>
+        <p class="font-serif text-lg text-gray-700">Cargando documento oficial…</p>
+      </div>
+
+      <!-- Estado: error -->
+      <div role="alert" class="hidden rounded border border-gray-200 border-l-4 border-l-py-rojo bg-white px-6 py-10 sm:px-10" data-estado="error" data-display="block">
+        <h2 class="text-xl font-bold sm:text-2xl" data-error-titulo>No se pudo cargar el documento</h2>
+        <p class="mt-3 max-w-2xl text-gray-600" data-error-detalle></p>
+        <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+          <button type="button" class="hidden min-h-11 items-center justify-center rounded bg-py-azul px-5 font-semibold text-white hover:bg-py-azul-oscuro" data-reintentar>
+            Reintentar
+          </button>
+          <a href={conBase('/publicaciones/')} class="inline-flex min-h-11 items-center justify-center rounded border-2 border-py-azul px-5 font-semibold text-py-azul no-underline hover:bg-py-azul hover:text-white">
+            Volver a Informes y Publicaciones
+          </a>
+        </div>
+      </div>
+
+      <!-- Estado: documento -->
+      <div class="hidden gap-10 lg:grid-cols-[16rem_minmax(0,1fr)]" data-estado="documento" data-display="grid">
+        <!-- Índice del documento: desplegable en móvil, lateral fijo en escritorio -->
+        <aside class="hidden print:hidden lg:sticky lg:top-6 lg:block lg:max-h-[calc(100dvh-3rem)] lg:self-start lg:overflow-y-auto" data-indice>
+          <details class="group rounded border border-gray-200 bg-white lg:border-0 lg:bg-transparent" data-indice-details>
+            <summary class="flex min-h-12 cursor-pointer list-none items-center justify-between px-4 font-serif font-semibold text-gray-900 lg:pointer-events-none lg:min-h-0 lg:px-0 lg:text-sm lg:uppercase lg:tracking-wide lg:text-gray-500 [&::-webkit-details-marker]:hidden">
+              Índice del documento
+              <span class="text-py-rojo transition-transform group-open:rotate-180 lg:hidden" aria-hidden="true">▾</span>
+            </summary>
+            <nav aria-label="Índice del documento" class="border-t border-gray-200 px-2 py-2 lg:border-0 lg:px-0">
+              <ol class="space-y-0.5 border-l border-gray-200 text-sm" data-indice-lista></ol>
+            </nav>
+          </details>
+        </aside>
+
+        <article
+          class="documento prose prose-gray max-w-none min-w-0 break-words rounded border border-gray-200 bg-white px-4 py-6 shadow-sm sm:p-10
+                 prose-headings:font-serif prose-headings:scroll-mt-6 prose-h2:mt-12 prose-h2:border-b-2 prose-h2:border-py-azul prose-h2:pb-2 prose-h2:text-2xl md:prose-h2:text-3xl
+                 prose-h2:first:mt-0 prose-h3:text-py-azul prose-a:text-py-azul prose-strong:text-gray-900
+                 prose-table:my-0 prose-th:bg-gray-100 prose-th:px-3 prose-th:py-2 prose-td:px-3 prose-td:py-2
+                 print:border-0 print:p-0 print:shadow-none"
+          data-contenido
+        ></article>
+      </div>
+    </div>
+  </div>
+</LayoutBase>
+
+<script>
+  import { iniciarVisor } from '../lib/visor';
+  iniciarVisor(document.getElementById('visor')!);
+</script>
