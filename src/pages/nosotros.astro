@@ -21,7 +21,7 @@ const documentos = documento ? (await render(documento)).headings.filter((h) => 
 
   <!-- 01 Historia y fundamentos -->
   <section aria-labelledby="historia-titulo" class="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-16 lg:px-8">
-    <div class="grid gap-10 lg:grid-cols-[1fr_20rem] lg:gap-16">
+    <div class="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16">
       <div>
         <p class="text-sm font-semibold uppercase tracking-widest text-py-rojo">01 · Historia y fundamentos</p>
         <h2 id="historia-titulo" class="mt-3 text-2xl font-bold leading-tight sm:text-3xl">{historia.titulo}</h2>
@@ -41,7 +41,7 @@ const documentos = documento ? (await render(documento)).headings.filter((h) => 
     <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-16 lg:px-8">
       <p class="text-sm font-semibold uppercase tracking-widest text-py-rojo">02 · Misión y visión</p>
       <h2 id="mision-titulo" class="mt-3 text-2xl font-bold sm:text-3xl">Nuestro propósito y horizonte</h2>
-      <dl class="mt-8 grid gap-6 md:grid-cols-2">
+      <dl class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
         <div class="rounded border border-gray-200 border-t-4 border-t-py-azul bg-gray-50 p-6">
           <dt class="font-serif text-xl font-semibold text-py-azul">Misión</dt>
           <dd class="mt-2 leading-relaxed text-gray-700">{mision}</dd>
@@ -58,7 +58,7 @@ const documentos = documento ? (await render(documento)).headings.filter((h) => 
   <section aria-labelledby="valores-titulo" class="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-16 lg:px-8">
     <p class="text-sm font-semibold uppercase tracking-widest text-py-rojo">03 · Valores</p>
     <h2 id="valores-titulo" class="mt-3 text-2xl font-bold sm:text-3xl">Principios que guían nuestro trabajo</h2>
-    <ul class="mt-8 grid gap-4 sm:grid-cols-3 sm:gap-6">
+    <ul class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
       {valores.map(({ titulo, descripcion }) => (
         <li class="rounded border border-gray-200 border-l-4 border-l-py-rojo bg-white p-6 shadow-sm">
           <h3 class="text-lg font-semibold">{titulo}</h3>
@@ -73,7 +73,7 @@ const documentos = documento ? (await render(documento)).headings.filter((h) => 
     <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-16 lg:px-8">
       <p class="text-sm font-semibold uppercase tracking-widest text-py-rojo">04 · Comisión directiva y equipo técnico</p>
       <h2 id="equipo-titulo" class="mt-3 text-2xl font-bold sm:text-3xl">Referentes del sector eléctrico</h2>
-      <ol class="mt-8 grid gap-4 md:grid-cols-3 md:gap-6">
+      <ol class="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
         {equipo.map(({ nombre, rol, bio }, i) => (
           <li class="flex gap-4 rounded border border-gray-200 bg-gray-50 p-6">
             <span class="font-serif text-2xl font-bold text-gray-300" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>

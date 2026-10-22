@@ -17,6 +17,8 @@ const secciones = headings.filter((h) => h.depth === 2);
 <LayoutBase
   titulo="Institucional"
   descripcion="Constitución, Acta de constitución, Estatutos, Reglamento Interno y Código de Ética del IPPSE."
+  migas={[{ nombre: 'Nosotros', ruta: conBase('/nosotros/') }]}
+  claves={['estatutos IPPSE', 'código de ética', 'constitución IPPSE']}
 >
   <EncabezadoPagina
     titulo="Institucional"
@@ -60,7 +62,7 @@ const secciones = headings.filter((h) => h.depth === 2);
       </ul>
     </section>
 
-    <div class="mt-8 grid gap-10 md:mt-12 lg:grid-cols-[16rem_1fr]">
+    <div class="mt-8 grid grid-cols-1 gap-10 md:mt-12 lg:grid-cols-[16rem_minmax(0,1fr)]">
       <aside class="hidden lg:sticky lg:top-6 lg:block lg:self-start" aria-labelledby="indice-titulo">
         <h2 id="indice-titulo" class="font-serif text-sm font-semibold uppercase tracking-wide text-gray-500">Índice</h2>
         <nav aria-labelledby="indice-titulo">

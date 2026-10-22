@@ -3,7 +3,7 @@ import { Icon } from 'astro-icon/components';
 import LayoutBase from '../layouts/LayoutBase.astro';
 import EncabezadoPagina from '../components/EncabezadoPagina.astro';
 import { citaPresidente } from '../data/institucion';
-import { contacto, accionFormulario } from '../data/contacto';
+import { contacto, telefonoEnlace, accionFormulario } from '../data/contacto';
 
 const tipos = [
   { valor: 'consulta', etiqueta: 'Consulta general', placeholder: '¿En qué podemos ayudarte?', boton: 'Enviar mensaje' },
@@ -18,7 +18,7 @@ const tipos = [
 const datos = [
   { etiqueta: 'Sede', valor: contacto.ciudad },
   { etiqueta: 'Email', valor: contacto.email, href: `mailto:${contacto.email}` },
-  { etiqueta: 'Teléfono', valor: contacto.telefono, href: `tel:${contacto.telefono.replace(/\s/g, '')}` },
+  { etiqueta: 'Teléfono', valor: contacto.telefono, href: `tel:${telefonoEnlace}` },
 ];
 
 const campo =
@@ -33,7 +33,7 @@ const etiquetaCampo = 'text-sm font-semibold text-gray-800';
 >
   <EncabezadoPagina titulo="Contacto y Membresía" antetitulo="Contacto / Unirse" />
 
-  <div class="mx-auto grid max-w-7xl gap-10 px-4 py-10 sm:px-6 md:py-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16 lg:px-8">
+  <div class="mx-auto grid grid-cols-1 max-w-7xl gap-10 px-4 py-10 sm:px-6 md:py-14 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16 lg:px-8">
     <!-- Cita y datos de contacto -->
     <div>
       <figure>

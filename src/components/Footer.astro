@@ -2,15 +2,19 @@
 import { conBase } from '../lib/rutas';
 import { navegacionPrincipal } from '../data/navegacion';
 import { descripcionCorta } from '../data/institucion';
-import { contacto } from '../data/contacto';
+import { contacto, telefonoEnlace } from '../data/contacto';
 
 const anio = new Date().getFullYear();
 ---
 
 <footer class="mt-16 border-t-4 border-py-azul bg-gray-900 text-gray-300">
-  <div class="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3 lg:px-8">
+  <div class="mx-auto grid grid-cols-1 max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3 lg:px-8">
     <section aria-labelledby="pie-institucion">
-      <h2 id="pie-institucion" class="font-serif text-lg font-semibold text-white">IPPSE</h2>
+      <h2 id="pie-institucion">
+        <a href={conBase('/')} class="-ml-2 inline-block">
+          <img src={conBase('/logo-ippse-blanco.svg')} alt="IPPSE" width="160" height="60" class="h-16 w-auto" loading="lazy" />
+        </a>
+      </h2>
       <p class="mt-3 text-sm leading-relaxed">
         Instituto de Profesionales Paraguayos del Sector Eléctrico. {descripcionCorta}
       </p>
@@ -33,7 +37,7 @@ const anio = new Date().getFullYear();
       <address class="mt-3 space-y-1 text-sm not-italic">
         <p>{contacto.ciudad}</p>
         <p><a href={`mailto:${contacto.email}`} class="text-gray-300 hover:text-white hover:underline">{contacto.email}</a></p>
-        <p><a href={`tel:${contacto.telefono.replace(/\s/g, '')}`} class="text-gray-300 hover:text-white hover:underline">{contacto.telefono}</a></p>
+        <p><a href={`tel:${telefonoEnlace}`} class="text-gray-300 hover:text-white hover:underline">{contacto.telefono}</a></p>
       </address>
     </section>
   </div>

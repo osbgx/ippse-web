@@ -11,49 +11,32 @@ const esActual = (href: string) => (rutaActual === href ? 'page' : seccionActiva
 ---
 
 <header class="sticky top-0 z-40 border-b border-gray-200 bg-white">
-  <!-- Franja tricolor -->
-  <div class="flex h-1.5" aria-hidden="true">
-    <span class="flex-1 bg-py-rojo"></span>
-    <span class="flex-1 bg-white"></span>
-    <span class="flex-1 bg-py-azul"></span>
-  </div>
-
-  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:gap-8 lg:py-4 lg:px-8">
-    <a href={conBase('/')} class="flex min-w-0 items-center gap-3 no-underline" aria-label="IPPSE — Ir al inicio">
-      <img src={conBase('/logo-ippse.svg')} alt="IPPSE" width="160" height="60" class="h-14 w-auto shrink-0 sm:h-16 lg:h-20" />
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2 sm:px-6 lg:gap-8 lg:py-3 lg:px-8">
+    <a href={conBase('/')} class="flex shrink-0 items-center no-underline" aria-label="IPPSE — Ir al inicio">
+      <img src={conBase('/logo-ippse.svg')} alt="IPPSE" width="213" height="80" class="h-14 w-auto sm:h-16 lg:h-(--alto-logo)" />
     </a>
 
-    <!-- Navegación de escritorio (≥ 1024 px) -->
-    <nav aria-label="Navegación principal" class="hidden lg:block">
-      <ul class="flex items-center gap-1">
+    <!--
+      Navegación de escritorio (≥ 1024 px). Comparte la geometría del logo (ver .nav-logo en global.css):
+      el texto se apoya en la línea base de "IPPSE" y el indicador ocupa la altura de la franja roja.
+    -->
+    <nav aria-label="Navegación principal" class="nav-logo hidden self-stretch lg:flex">
+      <ul class="flex items-stretch">
         {navegacionPrincipal.map(({ etiqueta, href }) => (
-          <li>
-            <a
-              href={href}
-              aria-current={esActual(href)}
-              class:list={[
-                'flex min-h-11 items-center whitespace-nowrap border-b-2 px-3 text-sm font-semibold uppercase tracking-wide no-underline',
-                esActual(href)
-                  ? 'border-py-rojo text-py-azul'
-                  : 'border-transparent text-gray-700 hover:border-py-azul hover:text-py-azul',
-              ]}
-            >
+          <li class="flex">
+            <a href={href} aria-current={esActual(href)} class="nav-logo-enlace">
               {etiqueta}
             </a>
           </li>
         ))}
-        <li class="ml-3">
-          <a href={enlaceMembresia} class="flex min-h-11 items-center rounded bg-py-rojo px-5 text-sm font-semibold uppercase tracking-wide whitespace-nowrap text-white no-underline hover:bg-py-rojo-oscuro hover:text-white">
-            Unirse
-          </a>
-        </li>
       </ul>
+      <a href={enlaceMembresia} class="nav-logo-accion">Unirse</a>
     </nav>
 
     <!-- Botón del menú móvil (< 1024 px) -->
     <button
       type="button"
-      class="inline-flex min-h-11 shrink-0 items-center gap-2 rounded border border-gray-300 bg-white px-3 text-sm font-semibold text-gray-800 hover:border-py-azul hover:text-py-azul lg:hidden"
+      class="inline-flex min-h-11 shrink-0 items-center gap-2 rounded px-2 font-serif text-base font-semibold text-gray-900 hover:text-py-azul lg:hidden"
       aria-haspopup="dialog"
       aria-controls="menu-movil"
       aria-expanded="false"
@@ -71,7 +54,7 @@ const esActual = (href: string) => (rutaActual === href ? 'page' : seccionActiva
         <img src={conBase('/logo-ippse.svg')} alt="IPPSE" width="160" height="60" class="h-14 w-auto" />
         <button
           type="button"
-          class="inline-flex min-h-11 items-center gap-2 rounded border border-gray-300 px-3 text-sm font-semibold text-gray-800 hover:border-py-azul hover:text-py-azul"
+          class="inline-flex min-h-11 items-center gap-2 rounded px-2 font-serif text-base font-semibold text-gray-900 hover:text-py-azul"
           data-menu-cerrar
         >
           <Icon name="lucide:x" class="h-5 w-5" aria-hidden="true" />
@@ -87,20 +70,19 @@ const esActual = (href: string) => (rutaActual === href ? 'page' : seccionActiva
                 href={href}
                 aria-current={esActual(href)}
                 class:list={[
-                  'flex min-h-14 items-center justify-between gap-4 border-l-4 px-4 font-serif text-lg font-semibold no-underline',
+                  'flex min-h-14 items-center border-l-[6px] px-4 font-serif text-xl font-semibold no-underline',
                   esActual(href)
-                    ? 'border-py-rojo bg-py-azul-claro text-py-azul'
-                    : 'border-transparent text-gray-900 hover:bg-gray-50 hover:text-py-azul',
+                    ? 'border-py-rojo text-py-azul'
+                    : 'border-transparent text-gray-900 hover:border-py-azul hover:text-py-azul',
                 ]}
               >
                 {etiqueta}
-                <span class="text-py-rojo" aria-hidden="true">→</span>
               </a>
             </li>
           ))}
         </ul>
 
-        <a href={enlaceMembresia} class="mt-6 flex min-h-12 items-center justify-center rounded bg-py-rojo px-5 font-semibold uppercase tracking-wide text-white no-underline hover:bg-py-rojo-oscuro hover:text-white">
+        <a href={enlaceMembresia} class="mt-6 flex min-h-12 items-center justify-center rounded bg-py-rojo px-5 font-serif text-lg font-semibold text-white no-underline hover:bg-py-rojo-oscuro hover:text-white">
           Unirse al IPPSE
         </a>
       </nav>

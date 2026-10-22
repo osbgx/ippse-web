@@ -23,9 +23,13 @@ const metadatos = Object.fromEntries(
 const config = { baseDocumentos, repoDocumentos, cdnMarked, cdnDomPurify, metadatos };
 ---
 
-<LayoutBase titulo="Documento" descripcion="Visor de documentos oficiales e informes técnicos del IPPSE.">
+<LayoutBase
+  titulo="Documento"
+  descripcion="Visor de documentos oficiales e informes técnicos del IPPSE."
+  noindex
+  migas={[{ nombre: 'Informes y Publicaciones', ruta: conBase('/publicaciones/') }]}
+>
   <!-- Contenido cargado en el cliente: el índice /publicaciones/ es la página indexable -->
-  <meta slot="head" name="robots" content="noindex, follow" />
 
   <div id="visor" data-config={JSON.stringify(config)}>
     <!-- Encabezado del documento -->
@@ -90,7 +94,7 @@ const config = { baseDocumentos, repoDocumentos, cdnMarked, cdnDomPurify, metada
       </div>
 
       <!-- Estado: documento -->
-      <div class="hidden gap-10 lg:grid-cols-[16rem_minmax(0,1fr)]" data-estado="documento" data-display="grid">
+      <div class="hidden grid-cols-1 gap-10 lg:grid-cols-[16rem_minmax(0,1fr)]" data-estado="documento" data-display="grid">
         <!-- Índice del documento: desplegable en móvil, lateral fijo en escritorio -->
         <aside class="hidden print:hidden lg:sticky lg:top-6 lg:block lg:max-h-[calc(100dvh-3rem)] lg:self-start lg:overflow-y-auto" data-indice>
           <details class="group rounded border border-gray-200 bg-white lg:border-0 lg:bg-transparent" data-indice-details>
