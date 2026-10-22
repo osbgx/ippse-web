@@ -46,7 +46,7 @@ const etiquetaCampo = 'text-sm font-semibold text-gray-800';
       <dl class="mt-10 divide-y divide-gray-200 border-y border-gray-200">
         {datos.map(({ etiqueta, valor, href }) => (
           <div class="flex flex-wrap items-center justify-between gap-x-6 gap-y-1 py-2">
-            <dt class="text-xs font-semibold uppercase tracking-widest text-gray-500">{etiqueta}</dt>
+            <dt class="font-serif text-sm font-semibold text-gray-500">{etiqueta}</dt>
             <dd class="font-medium text-gray-900">{href ? <a href={href} class="inline-flex min-h-11 items-center">{valor}</a> : valor}</dd>
           </div>
         ))}
@@ -70,7 +70,7 @@ const etiquetaCampo = 'text-sm font-semibold text-gray-800';
           <legend class="sr-only">Tipo de mensaje</legend>
           <div class="grid grid-cols-2 gap-1 rounded bg-gray-100 p-1">
             {tipos.map(({ valor, etiqueta }, i) => (
-              <label class="flex min-h-11 cursor-pointer items-center justify-center rounded px-2 text-center text-sm font-semibold text-gray-600 has-checked:bg-py-azul has-checked:text-white has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-py-azul">
+              <label class="font-serif flex min-h-11 cursor-pointer items-center justify-center rounded px-2 text-center text-sm font-semibold text-gray-600 has-checked:bg-py-azul has-checked:text-white has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-py-azul">
                 <input type="radio" name="tipo" value={valor} checked={i === 0} class="sr-only" />
                 {etiqueta}
               </label>
@@ -106,7 +106,7 @@ const etiquetaCampo = 'text-sm font-semibold text-gray-800';
 
         <p class="text-xs text-gray-500"><span class="text-py-rojo" aria-hidden="true">*</span> Campos obligatorios</p>
 
-        <button type="submit" class="flex min-h-12 w-full items-center justify-center gap-2 rounded bg-py-azul px-6 font-semibold text-white hover:bg-py-azul-oscuro sm:w-auto" data-boton-enviar>
+        <button type="submit" class="font-serif flex min-h-12 w-full items-center justify-center gap-2 rounded bg-py-azul px-6 font-semibold text-white hover:bg-py-azul-oscuro sm:w-auto" data-boton-enviar>
           <span data-boton-texto>{tipos[0].boton}</span>
           <Icon name="lucide:send" class="h-4 w-4" aria-hidden="true" />
         </button>

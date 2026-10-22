@@ -2,10 +2,17 @@
 import { conBase } from '../lib/rutas';
 import { Icon } from 'astro-icon/components';
 import LayoutBase from '../layouts/LayoutBase.astro';
-import { categorias, fechaLegible, publicacionesOrdenadas } from '../data/publicaciones';
-import { baseDocumentos, repoDocumentos, cdnMarked, cdnDomPurify } from '../data/visor';
+import { categorias, fechaLegible, getPublicaciones } from '../data/publicaciones';
+import {
+  baseDocumentos, carpetaPublicaciones, cdnMarked, cdnDomPurify,
+  cdnMermaid, cdnKatex, cdnKatexCss,
+} from '../data/visor';
+import { urlRepo } from '../data/fuenteDocumentos';
+
+const publicacionesOrdenadas = await getPublicaciones();
 
 // Metadatos del índice para mostrar título, fecha y autor sin esperar al documento.
+// El PDF ya viene resuelto desde `publicaciones.ts`.
 const metadatos = Object.fromEntries(
   publicacionesOrdenadas.map((p) => [
     p.id,
@@ -20,7 +27,19 @@ const metadatos = Object.fromEntries(
   ]),
 );
 
-const config = { baseDocumentos, repoDocumentos, cdnMarked, cdnDomPurify, metadatos };
+const config = {
+  baseDocumentos: baseDocumentos(),
+  urlGitHub: `${urlRepo}/blob/${import.meta.env.PUBLIC_DOCS_RAMA ?? 'main'}`,
+  carpetaPublicaciones,
+  // Ruta del visor como texto: una función no sobrevive a JSON.stringify.
+  urlVisor: conBase('/visor/'),
+  cdnMarked,
+  cdnDomPurify,
+  cdnMermaid,
+  cdnKatex,
+  cdnKatexCss,
+  metadatos,
+};
 ---
 
 <LayoutBase
@@ -44,9 +63,8 @@ const config = { baseDocumentos, repoDocumentos, cdnMarked, cdnDomPurify, metada
             <li aria-current="page" class="text-gray-700">Documento</li>
           </ol>
         </nav>
-        <p class="mt-4 hidden flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold uppercase tracking-wide" data-meta>
+        <p class="font-serif mt-4 hidden flex-wrap items-baseline gap-x-4 gap-y-1 text-sm font-semibold" data-meta>
           <span class="text-py-rojo" data-meta-categoria></span>
-          <span class="text-gray-300" aria-hidden="true">|</span>
           <time class="text-gray-500" data-meta-fecha></time>
         </p>
         <h1 class="mt-3 border-l-4 border-py-rojo pl-4 text-2xl font-bold leading-tight break-words sm:text-3xl md:text-4xl" data-titulo>
@@ -55,16 +73,16 @@ const config = { baseDocumentos, repoDocumentos, cdnMarked, cdnDomPurify, metada
         <p class="mt-3 hidden pl-5 text-gray-600" data-meta-autor></p>
 
         <div class="mt-6 hidden flex-wrap gap-3 print:hidden" data-acciones>
-          <a href="#" class="hidden min-h-11 items-center gap-2 rounded bg-py-rojo px-4 text-sm font-semibold text-white no-underline hover:bg-py-rojo-oscuro" data-pdf target="_blank" rel="noopener">
+          <a href="#" class="font-serif hidden min-h-11 items-center gap-2 rounded bg-py-rojo px-4 text-sm font-semibold text-white no-underline hover:bg-py-rojo-oscuro" data-pdf target="_blank" rel="noopener">
             <Icon name="lucide:download" class="h-4 w-4" aria-hidden="true" />
             Ver PDF oficial
             <span class="sr-only">(abre en una pestaña nueva)</span>
           </a>
-          <button type="button" class="inline-flex min-h-11 items-center gap-2 rounded border border-gray-300 bg-white px-4 text-sm font-semibold text-gray-700 hover:border-py-azul hover:text-py-azul" data-imprimir>
+          <button type="button" class="font-serif inline-flex min-h-11 items-center gap-2 rounded border border-gray-300 bg-white px-4 text-sm font-semibold text-gray-700 hover:border-py-azul hover:text-py-azul" data-imprimir>
             <Icon name="lucide:printer" class="h-4 w-4" aria-hidden="true" />
             Imprimir / PDF
           </button>
-          <a href="#" class="inline-flex min-h-11 items-center gap-2 rounded border border-gray-300 bg-white px-4 text-sm font-semibold text-gray-700 no-underline hover:border-py-azul hover:text-py-azul" data-fuente target="_blank" rel="noopener">
+          <a href="#" class="font-serif inline-flex min-h-11 items-center gap-2 rounded border border-gray-300 bg-white px-4 text-sm font-semibold text-gray-700 no-underline hover:border-py-azul hover:text-py-azul" data-fuente target="_blank" rel="noopener">
             Ver fuente en GitHub
             <span class="sr-only">(abre en una pestaña nueva)</span>
           </a>
@@ -84,10 +102,10 @@ const config = { baseDocumentos, repoDocumentos, cdnMarked, cdnDomPurify, metada
         <h2 class="text-xl font-bold sm:text-2xl" data-error-titulo>No se pudo cargar el documento</h2>
         <p class="mt-3 max-w-2xl text-gray-600" data-error-detalle></p>
         <div class="mt-6 flex flex-col gap-3 sm:flex-row">
-          <button type="button" class="hidden min-h-11 items-center justify-center rounded bg-py-azul px-5 font-semibold text-white hover:bg-py-azul-oscuro" data-reintentar>
+          <button type="button" class="font-serif hidden min-h-11 items-center justify-center rounded bg-py-azul px-5 font-semibold text-white hover:bg-py-azul-oscuro" data-reintentar>
             Reintentar
           </button>
-          <a href={conBase('/publicaciones/')} class="inline-flex min-h-11 items-center justify-center rounded border-2 border-py-azul px-5 font-semibold text-py-azul no-underline hover:bg-py-azul hover:text-white">
+          <a href={conBase('/publicaciones/')} class="font-serif inline-flex min-h-11 items-center justify-center rounded border-2 border-py-azul px-5 font-semibold text-py-azul no-underline hover:bg-py-azul hover:text-white">
             Volver a Informes y Publicaciones
           </a>
         </div>
@@ -98,7 +116,7 @@ const config = { baseDocumentos, repoDocumentos, cdnMarked, cdnDomPurify, metada
         <!-- Índice del documento: desplegable en móvil, lateral fijo en escritorio -->
         <aside class="hidden print:hidden lg:sticky lg:top-6 lg:block lg:max-h-[calc(100dvh-3rem)] lg:self-start lg:overflow-y-auto" data-indice>
           <details class="group rounded border border-gray-200 bg-white lg:border-0 lg:bg-transparent" data-indice-details>
-            <summary class="flex min-h-12 cursor-pointer list-none items-center justify-between px-4 font-serif font-semibold text-gray-900 lg:pointer-events-none lg:min-h-0 lg:px-0 lg:text-sm lg:uppercase lg:tracking-wide lg:text-gray-500 [&::-webkit-details-marker]:hidden">
+            <summary class="flex min-h-12 cursor-pointer list-none items-center justify-between px-4 font-serif font-semibold text-gray-900 lg:pointer-events-none lg:min-h-0 lg:px-0 lg:text-base lg:text-gray-700 [&::-webkit-details-marker]:hidden">
               Índice del documento
               <span class="text-py-rojo transition-transform group-open:rotate-180 lg:hidden" aria-hidden="true">▾</span>
             </summary>

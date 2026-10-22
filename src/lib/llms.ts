@@ -7,7 +7,7 @@ import { contacto } from '../data/contacto';
 import {
   descripcionCorta, ejesEstrategicos, fundacion, historia, lema, mision, valores, vision,
 } from '../data/institucion';
-import { categorias, publicacionesOrdenadas } from '../data/publicaciones';
+import { categorias, getPublicaciones } from '../data/publicaciones';
 import { fechaCorta } from '../data/prensa';
 
 const etiquetasPrensa = { comunicado: 'Comunicado', aparicion: 'Aparición en medios', evento: 'Evento' } as const;
@@ -15,6 +15,7 @@ const etiquetasPrensa = { comunicado: 'Comunicado', aparicion: 'Aparición en me
 export const generarLlms = async (site: URL, completo: boolean): Promise<string> => {
   const url = (ruta: string) => urlAbsoluta(ruta, site);
   const prensa = (await getCollection('prensa')).sort((a, b) => b.data.fecha.localeCompare(a.data.fecha));
+  const publicacionesOrdenadas = await getPublicaciones();
 
   const lineas: string[] = [
     `# IPPSE — ${nombreInstitucion}`,

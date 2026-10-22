@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { autorSitio, imagenSocial, paginasIndexables, urlAbsoluta } from '../data/seo';
-import { publicacionesOrdenadas } from '../data/publicaciones';
+import { getPublicaciones } from '../data/publicaciones';
 
 const escapar = (texto: string) =>
   texto.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -23,6 +23,7 @@ const noFutura = (fecha: string) => {
 
 export const GET: APIRoute = async ({ site }) => {
   const prensa = await getCollection('prensa');
+  const publicacionesOrdenadas = await getPublicaciones();
   const ultimaPrensa = noFutura(prensa.map((e) => e.data.fecha).sort().at(-1) ?? hoy);
   const ultimaPublicacion = publicacionesOrdenadas[0]?.fecha;
   const ultimaFecha: Record<string, string | undefined> = {

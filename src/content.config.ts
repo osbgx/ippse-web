@@ -1,6 +1,7 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { basePrensa, patronPrensa } from './data/fuentePrensa';
+import { publicacionesRemotas } from './lib/cargador-publicaciones';
 
 // Documentos institucionales (Constitución, Estatutos, Código de Ética, etc.)
 const institucional = defineCollection({
@@ -28,4 +29,30 @@ const prensa = defineCollection({
     ),
 });
 
-export const collections = { institucional, prensa };
+// Informes y Publicaciones: el contenido vive en el repositorio externo de
+// documentos (ver src/data/fuenteDocumentos.ts). El loader lo descarga en build.
+// El esquema refleja esquema/publicacion.schema.json del repositorio.
+const publicaciones = defineCollection({
+  loader: publicacionesRemotas,
+  schema: z.object({
+    titulo: z.string().min(3),
+    /** Fecha ISO (AAAA-MM-DD o AAAA-MM); se acepta sin comillas en el YAML. */
+    fecha: z.coerce.string().regex(/^\d{4}-\d{2}(-\d{2})?$/, 'Usar AAAA-MM-DD o AAAA-MM'),
+    categoria: z.enum(['diagnostico', 'propuesta', 'opinion']),
+    autor: z.string().min(2),
+    extracto: z.string().min(10).max(320),
+    /** Minutos de lectura estimados (opcional). */
+    lectura: z.number().int().positive().optional(),
+    /** "proximamente" deja la tarjeta sin enlace al visor. */
+    estado: z.enum(['publicado', 'proximamente']).default('publicado'),
+    /** Ruta del PDF oficial en el propio sitio, si existe. */
+    pdf: z.string().optional(),
+    /** Imagen de portada, relativa a imagenes/<id>/. */
+    portada: z.string().optional(),
+    etiquetas: z.array(z.string()).default([]),
+    /** true para resaltar la publicación en la portada. */
+    destacado: z.boolean().default(false),
+  }),
+});
+
+export const collections = { institucional, prensa, publicaciones };

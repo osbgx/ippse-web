@@ -71,7 +71,7 @@ const nodo =
   schema={[nodo]}
 >
   <EncabezadoPagina titulo={titulo} migas={migas} bajada={tipo === 'comunicado' ? entrada.data.extracto : undefined}>
-    <p class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold uppercase tracking-wide">
+    <p class="font-serif mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm font-semibold">
       <span class="rounded bg-py-azul px-2 py-1 text-white">{etiqueta}</span>
       <time datetime={fecha} class="text-gray-500">{fechaCorta(fecha)}</time>
       {tipo === 'aparicion' && <span class="text-py-azul">{entrada.data.medio}</span>}
@@ -99,7 +99,7 @@ const nodo =
           href={entrada.data.url}
           target="_blank"
           rel="noopener"
-          class="inline-flex min-h-11 items-center rounded bg-py-azul px-5 font-semibold text-white no-underline hover:bg-py-azul-oscuro"
+          class="font-serif inline-flex min-h-11 items-center rounded bg-py-azul px-5 font-semibold text-white no-underline hover:bg-py-azul-oscuro"
         >
           Ver la nota en {entrada.data.medio}
           <span class="sr-only"> (abre en una pestaña nueva)</span>

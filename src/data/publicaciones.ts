@@ -1,8 +1,16 @@
-// Índice de publicaciones. Cada `id` debe coincidir con el nombre del archivo
-// en el repositorio de documentos: https://github.com/IPPSE/documentos/<id>.md
+// Informes y Publicaciones.
+//
+// El contenido NO vive en este archivo: se lee del repositorio externo de
+// documentos (ver `src/data/fuenteDocumentos.ts`) mediante la colección
+// `publicaciones` definida en `src/content.config.ts`.
+//
+// Este módulo actúa como adaptador: expone los datos ya tipados, ordenados y
+// listos para las páginas, de modo que la forma de consumirlos no cambie.
+// Para publicar un informe nuevo, basta con subir el .md al repositorio.
 
-import { pdfInforme226 } from './documentos';
+import { getCollection } from 'astro:content';
 import { conBase } from '../lib/rutas';
+import { resolverRutaPdf, urlEnGitHub, urlRecurso, urlRepo } from './fuenteDocumentos';
 
 export const categorias = {
   diagnostico: 'Diagnóstico',
@@ -15,118 +23,59 @@ export type Categoria = keyof typeof categorias;
 export interface Publicacion {
   id: string;
   titulo: string;
-  /** Fecha ISO (AAAA-MM-DD). */
+  /** Fecha ISO (AAAA-MM-DD o AAAA-MM). */
   fecha: string;
   categoria: Categoria;
   autor: string;
   extracto: string;
-  /** Minutos de lectura estimados. */
+  /** Minutos de lectura estimados (0 si no se indicó). */
   lectura: number;
-  /** true si el .md ya está publicado en el repositorio; si no, la tarjeta no enlaza al visor. */
+  /** true cuando el documento ya puede leerse en el visor. */
   disponible: boolean;
-  /** Ruta del PDF oficial en el propio sitio, si ya fue cargado en public/documentos/. */
+  /**
+   * URL del PDF oficial, ya resuelta. Puede vivir en el repositorio de contenido
+   * (`documentos/`) o en el propio sitio: ver `resolverRutaPdf`.
+   */
   pdf?: string;
+  /** Imagen de portada, si existe. */
+  portada?: string;
+  /** Palabras clave para búsqueda y SEO. */
+  etiquetas: string[];
+  /** true si la publicación está resaltada en la portada. */
+  destacado: boolean;
+  /** Cuerpo Markdown sin la cabecera YAML. */
+  cuerpo: string;
 }
 
-const publicaciones: Publicacion[] = [
-  {
-    id: 'informe-2-26',
-    disponible: true,
-    lectura: 51,
-    pdf: pdfInforme226.href,
-    titulo: 'Informe Técnico Nº 2/26 — Requerimientos de generación eléctrica 2026–2035. Parte II: alternativas de nuevas fuentes',
-    fecha: '2026-10-14',
-    categoria: 'diagnostico',
-    autor: 'Comité Ejecutivo',
-    extracto:
-      'Parte II del análisis del IPPSE sobre el riesgo de crisis energética 2026–2035: evalúa hidroeléctricas ' +
-      'binacionales y de ríos interiores, solar con bancos de baterías, eólica, térmica, nuclear (SMR) e ' +
-      'interconexiones con Brasil y Argentina, con plazos de habilitación de 3 a 15 años.',
-  },
-  {
-    id: 'balance-oferta-demanda-sin-2026-2030',
-    disponible: false,
-    lectura: 32,
-    titulo: 'Balance oferta-demanda del Sistema Interconectado Nacional 2026–2030',
-    fecha: '2026-10-01',
-    categoria: 'diagnostico',
-    autor: 'Comité Técnico Asesor',
-    extracto: 'Actualización del balance entre oferta y demanda de potencia y energía del SIN para el próximo quinquenio.',
-  },
-  {
-    id: 'hacia-un-ministerio-de-energia',
-    disponible: false,
-    lectura: 24,
-    titulo: 'Hacia un Ministerio de Energía: marco institucional para Paraguay',
-    fecha: '2026-09-15',
-    categoria: 'propuesta',
-    autor: 'Ing. Ángel María Recalde',
-    extracto: 'Propuesta de un marco institucional que concentre la rectoría de la política energética nacional.',
-  },
-  {
-    id: 'diversificacion-matriz-solar-eolica',
-    disponible: false,
-    lectura: 12,
-    titulo: 'Diversificación de la matriz: el rol de la solar y eólica complementaria',
-    fecha: '2026-09-01',
-    categoria: 'opinion',
-    autor: 'Comité Técnico Asesor',
-    extracto: 'Análisis del aporte de las fuentes solar y eólica como complemento de la base hidroeléctrica.',
-  },
-  {
-    id: 'cuellos-de-botella-transmision-500kv',
-    disponible: false,
-    lectura: 28,
-    titulo: 'Cuellos de botella en transmisión: análisis de la red de 500 kV',
-    fecha: '2026-08-15',
-    categoria: 'diagnostico',
-    autor: 'Comité Técnico Asesor',
-    extracto: 'Identificación de restricciones en la red troncal de 500 kV y su impacto en la confiabilidad del sistema.',
-  },
-  {
-    id: 'fast-track-planes-maestros',
-    disponible: false,
-    lectura: 18,
-    titulo: 'Fast track para Planes Maestros de Generación y Transmisión',
-    fecha: '2026-08-01',
-    categoria: 'propuesta',
-    autor: 'Comisión Directiva',
-    extracto: 'Mecanismos para agilizar la aprobación y ejecución de los Planes Maestros del sector eléctrico.',
-  },
-  {
-    id: 'soberania-energetica-mas-alla-hidroelectricidad',
-    disponible: false,
-    lectura: 15,
-    titulo: 'Soberanía energética: más allá de la hidroelectricidad',
-    fecha: '2026-07-15',
-    categoria: 'opinion',
-    autor: 'Ing. Ángel María Recalde',
-    extracto: 'Reflexión sobre los pilares de la soberanía energética paraguaya en un escenario de demanda creciente.',
-  },
-  {
-    id: 'alerta-deficit-potencia-2028',
-    disponible: false,
-    lectura: 20,
-    titulo: 'Alerta temprana: déficit de potencia firme proyectado para 2028',
-    fecha: '2026-07-01',
-    categoria: 'diagnostico',
-    autor: 'Comité Técnico Asesor',
-    extracto: 'Proyección del déficit de potencia firme y medidas necesarias para evitarlo.',
-  },
-  {
-    id: 'biomasa-generacion-distribuida',
-    disponible: false,
-    lectura: 22,
-    titulo: 'Biomasa y generación distribuida: oportunidades para el sector',
-    fecha: '2026-06-15',
-    categoria: 'propuesta',
-    autor: 'Comité Técnico Asesor',
-    extracto: 'Oportunidades de la biomasa y la generación distribuida para ampliar y descentralizar la oferta eléctrica.',
-  },
-];
+/** Ordena por fecha descendente (lo más reciente primero). */
+const porFechaDesc = (a: Publicacion, b: Publicacion) => b.fecha.localeCompare(a.fecha);
 
-/** Publicaciones ordenadas de la más reciente a la más antigua. */
-export const publicacionesOrdenadas = [...publicaciones].sort((a, b) => b.fecha.localeCompare(a.fecha));
+/** Todas las publicaciones, listas para las páginas. */
+export const getPublicaciones = async (): Promise<Publicacion[]> => {
+  const entradas = await getCollection('publicaciones');
+  return entradas
+    .map((e) => ({
+      id: e.id,
+      titulo: e.data.titulo,
+      fecha: e.data.fecha,
+      categoria: e.data.categoria,
+      autor: e.data.autor,
+      extracto: e.data.extracto,
+      lectura: e.data.lectura ?? 0,
+      disponible: e.data.estado === 'publicado',
+      // El PDF se resuelve una sola vez acá: repositorio de contenido o sitio.
+      pdf: e.data.pdf ? resolverRutaPdf(e.data.pdf) : undefined,
+      // La portada siempre vive en el repositorio, en imagenes/<id>/.
+      portada: e.data.portada ? urlRecurso(`imagenes/${e.id}/${e.data.portada}`) : undefined,
+      etiquetas: e.data.etiquetas,
+      destacado: e.data.destacado,
+      cuerpo: e.body ?? '',
+    }))
+    .sort(porFechaDesc);
+};
+
+/** Alias de compatibilidad: mismas publicaciones, ya ordenadas. */
+export const getPublicacionesOrdenadas = getPublicaciones;
 
 export const urlVisor = (id: string) => conBase(`/visor/?doc=${encodeURIComponent(id)}`);
 
@@ -134,4 +83,12 @@ export const urlVisor = (id: string) => conBase(`/visor/?doc=${encodeURIComponen
 export const atributosPdf = { target: '_blank', rel: 'noopener' } as const;
 
 const formatoFecha = new Intl.DateTimeFormat('es-PY', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
-export const fechaLegible = (iso: string) => formatoFecha.format(new Date(iso));
+export const fechaLegible = (iso: string) =>
+  formatoFecha.format(new Date(iso.length === 7 ? `${iso}-01` : iso));
+
+/** Enlace al archivo fuente en GitHub (para el visor y la trazabilidad). */
+export const urlFuenteDocumento = (id: string) =>
+  urlEnGitHub(`contenido/publicaciones/${id}.md`);
+
+/** Página del repositorio de documentos en GitHub. */
+export { urlRepo as urlRepoDocumentos };

@@ -23,15 +23,15 @@ const documentos = documento ? (await render(documento)).headings.filter((h) => 
   <section aria-labelledby="historia-titulo" class="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-16 lg:px-8">
     <div class="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16">
       <div>
-        <p class="text-sm font-semibold uppercase tracking-widest text-py-rojo">01 · Historia y fundamentos</p>
+        <p class="font-serif text-sm font-semibold text-py-rojo">01 · Historia y fundamentos</p>
         <h2 id="historia-titulo" class="mt-3 text-2xl font-bold leading-tight sm:text-3xl">{historia.titulo}</h2>
         {historia.parrafos.map((p) => <p class="mt-4 max-w-3xl leading-relaxed text-gray-700">{p}</p>)}
       </div>
       <aside class="self-start rounded border border-gray-200 border-l-4 border-l-py-azul bg-white p-6 shadow-sm" aria-label="Datos de fundación">
-        <p class="text-xs font-semibold uppercase tracking-wide text-gray-500">Fundado el</p>
+        <p class="font-serif text-sm font-semibold text-gray-500">Fundado el</p>
         <p class="mt-1 font-serif text-2xl font-bold text-py-azul">{fundacion}</p>
         <p class="mt-2 text-sm text-gray-600">Asunción, República del Paraguay</p>
-        <a href={conBase('/institucional/#acta-de-constitucion')} class="mt-4 flex min-h-11 items-center text-sm font-semibold">Ver Acta de constitución →</a>
+        <a href={conBase('/institucional/#acta-de-constitución')} class="mt-4 flex min-h-11 items-center text-sm font-semibold">Ver Acta de constitución →</a>
       </aside>
     </div>
   </section>
@@ -39,7 +39,7 @@ const documentos = documento ? (await render(documento)).headings.filter((h) => 
   <!-- 02 Misión y visión -->
   <section aria-labelledby="mision-titulo" class="border-y border-gray-200 bg-white">
     <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-16 lg:px-8">
-      <p class="text-sm font-semibold uppercase tracking-widest text-py-rojo">02 · Misión y visión</p>
+      <p class="font-serif text-sm font-semibold text-py-rojo">02 · Misión y visión</p>
       <h2 id="mision-titulo" class="mt-3 text-2xl font-bold sm:text-3xl">Nuestro propósito y horizonte</h2>
       <dl class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2">
         <div class="rounded border border-gray-200 border-t-4 border-t-py-azul bg-gray-50 p-6">
@@ -56,7 +56,7 @@ const documentos = documento ? (await render(documento)).headings.filter((h) => 
 
   <!-- 03 Valores -->
   <section aria-labelledby="valores-titulo" class="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-16 lg:px-8">
-    <p class="text-sm font-semibold uppercase tracking-widest text-py-rojo">03 · Valores</p>
+    <p class="font-serif text-sm font-semibold text-py-rojo">03 · Valores</p>
     <h2 id="valores-titulo" class="mt-3 text-2xl font-bold sm:text-3xl">Principios que guían nuestro trabajo</h2>
     <ul class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
       {valores.map(({ titulo, descripcion }) => (
@@ -71,7 +71,7 @@ const documentos = documento ? (await render(documento)).headings.filter((h) => 
   <!-- 04 Comisión directiva y equipo -->
   <section aria-labelledby="equipo-titulo" class="border-y border-gray-200 bg-white">
     <div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-16 lg:px-8">
-      <p class="text-sm font-semibold uppercase tracking-widest text-py-rojo">04 · Comisión directiva y equipo técnico</p>
+      <p class="font-serif text-sm font-semibold text-py-rojo">04 · Comisión directiva y equipo técnico</p>
       <h2 id="equipo-titulo" class="mt-3 text-2xl font-bold sm:text-3xl">Referentes del sector eléctrico</h2>
       <ol class="mt-8 grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-6">
         {equipo.map(({ nombre, rol, bio }, i) => (
@@ -92,7 +92,7 @@ const documentos = documento ? (await render(documento)).headings.filter((h) => 
   <section aria-labelledby="marco-titulo" class="mx-auto max-w-7xl px-4 py-12 sm:px-6 md:py-16 lg:px-8">
     <div class="flex flex-wrap items-end justify-between gap-4">
       <div>
-        <p class="text-sm font-semibold uppercase tracking-widest text-py-rojo">05 · Marco institucional</p>
+        <p class="font-serif text-sm font-semibold text-py-rojo">05 · Marco institucional</p>
         <h2 id="marco-titulo" class="mt-3 text-2xl font-bold sm:text-3xl">Documentos institucionales</h2>
       </div>
       <a href={conBase('/institucional/')} class="inline-flex min-h-11 items-center font-semibold">Ver todos los documentos →</a>
@@ -106,7 +106,7 @@ const documentos = documento ? (await render(documento)).headings.filter((h) => 
           rel="noopener"
           class="group flex h-full flex-col rounded border border-gray-200 border-l-4 border-l-py-rojo bg-white p-3 no-underline shadow-sm hover:bg-gray-50 sm:p-4"
         >
-          <span class="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-py-rojo">
+          <span class="font-serif flex items-center gap-1.5 text-sm font-semibold text-py-rojo">
             <Icon name="lucide:download" class="h-3.5 w-3.5" aria-hidden="true" />
             PDF
           </span>
@@ -117,7 +117,7 @@ const documentos = documento ? (await render(documento)).headings.filter((h) => 
       {documentos.map(({ slug, text }) => (
         <li>
           <a href={conBase(`/institucional/#${slug}`)} class="group flex h-full flex-col rounded border border-gray-200 border-l-4 border-l-py-azul bg-white p-3 no-underline shadow-sm hover:border-l-py-rojo sm:p-4">
-            <span class="text-xs font-semibold uppercase tracking-wide text-gray-500">Documento</span>
+            <span class="font-serif text-sm font-semibold text-gray-500">Documento</span>
             <span class="mt-1 font-serif text-base font-semibold leading-snug text-gray-900 group-hover:text-py-azul sm:text-lg">{text}</span>
           </a>
         </li>

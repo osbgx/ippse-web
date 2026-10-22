@@ -36,9 +36,14 @@ jobs:
       # Los datos de contacto se pueden definir como "Variables" del repositorio
       # (Settings > Secrets and variables > Actions > Variables). Si no están, se
       # usan los valores por defecto de src/data/contacto.ts.
+      #
+      # GITHUB_TOKEN: lo provee Actions automáticamente. El loader de publicaciones
+      # lee el repositorio de contenido por la API de GitHub; sin token, el límite
+      # anónimo (60 peticiones/hora por IP) puede hacer fallar el build.
       - run: npm run build
         env:
           DEPLOY_TARGET: pages
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PUBLIC_IPPSE_EMAIL: ${{ vars.PUBLIC_IPPSE_EMAIL }}
           PUBLIC_IPPSE_TELEFONO: ${{ vars.PUBLIC_IPPSE_TELEFONO }}
           PUBLIC_IPPSE_CIUDAD: ${{ vars.PUBLIC_IPPSE_CIUDAD }}

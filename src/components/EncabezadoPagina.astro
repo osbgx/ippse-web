@@ -33,7 +33,7 @@ const { titulo, bajada, migas = [], antetitulo } = Astro.props;
         <li aria-current="page" class="text-gray-700">{titulo}</li>
       </ol>
     </nav>
-    {antetitulo && <p class="mt-5 text-sm font-semibold uppercase tracking-widest text-py-rojo">{antetitulo}</p>}
+    {antetitulo && <p class="font-serif mt-5 text-sm font-semibold text-py-rojo">{antetitulo}</p>}
     <h1 class="mt-3 border-l-4 border-py-rojo pl-4 text-2xl font-bold sm:text-3xl md:text-4xl">{titulo}</h1>
     {bajada && <p class="mt-3 max-w-3xl pl-5 text-base text-gray-600 sm:text-lg">{bajada}</p>}
     <slot />

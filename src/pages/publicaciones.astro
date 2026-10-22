@@ -3,8 +3,10 @@ import { Icon } from 'astro-icon/components';
 import LayoutBase from '../layouts/LayoutBase.astro';
 import EncabezadoPagina from '../components/EncabezadoPagina.astro';
 import TarjetaPublicacion from '../components/TarjetaPublicacion.astro';
-import { publicacionesOrdenadas } from '../data/publicaciones';
+import { getPublicaciones } from '../data/publicaciones';
 import { canalWhatsApp } from '../data/contacto';
+
+const publicacionesOrdenadas = await getPublicaciones();
 
 const descripcion =
   'Repositorio de diagnósticos, propuestas estratégicas y ensayos técnicos elaborados por el IPPSE ' +
@@ -104,7 +106,7 @@ const jsonLd = {
           href={canalWhatsApp}
           target="_blank"
           rel="noopener"
-          class="inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded bg-[#075E54] px-6 py-3 font-semibold text-white no-underline hover:bg-[#053f39]"
+          class="font-serif inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded bg-[#075E54] px-6 py-3 font-semibold text-white no-underline hover:bg-[#053f39]"
         >
           <Icon name="simple-icons:whatsapp" class="h-5 w-5 text-[#25D366]" aria-hidden="true" />
           Unirme al canal de WhatsApp

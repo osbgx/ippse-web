@@ -12,7 +12,7 @@ import { navegacionPrincipal } from '../data/navegacion';
     <ul class="mt-8 grid grid-cols-1 gap-3 text-left sm:grid-cols-2">
       {[...navegacionPrincipal, { etiqueta: 'Documentos institucionales', href: conBase('/institucional/') }].map(({ etiqueta, href }) => (
         <li>
-          <a href={href} class="flex min-h-12 items-center justify-between rounded border border-gray-200 bg-white px-4 font-semibold text-gray-900 no-underline hover:border-py-azul hover:text-py-azul">
+          <a href={href} class="font-serif flex min-h-12 items-center justify-between rounded border border-gray-200 bg-white px-4 font-semibold text-gray-900 no-underline hover:border-py-azul hover:text-py-azul">
             {etiqueta}<span class="text-py-rojo" aria-hidden="true">→</span>
           </a>
         </li>
