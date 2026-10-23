@@ -31,7 +31,7 @@ const documentos = documento ? (await render(documento)).headings.filter((h) => 
         <p class="font-serif text-sm font-semibold text-gray-500">Fundado el</p>
         <p class="mt-1 font-serif text-2xl font-bold text-py-azul">{fundacion}</p>
         <p class="mt-2 text-sm text-gray-600">Asunción, República del Paraguay</p>
-        <a href={conBase('/institucional/#acta-de-constitución')} class="mt-4 flex min-h-11 items-center text-sm font-semibold">Ver Acta de constitución →</a>
+        <a href={conBase('/institucional/#acta-de-constitucion')} class="mt-4 flex min-h-11 items-center text-sm font-semibold">Ver Acta de constitución →</a>
       </aside>
     </div>
   </section>
@@ -101,14 +101,12 @@ const documentos = documento ? (await render(documento)).headings.filter((h) => 
       <!-- Acta de Constitución: versión oficial en PDF -->
       <li>
         <a
-          href={pdfConstitucion.href}
-          target="_blank"
-          rel="noopener"
+          href={conBase('/institucional/#acta-de-constitucion')}
           class="group flex h-full flex-col rounded border border-gray-200 border-l-4 border-l-py-rojo bg-white p-3 no-underline shadow-sm hover:bg-gray-50 sm:p-4"
         >
           <span class="font-serif flex items-center gap-1.5 text-sm font-semibold text-py-rojo">
-            <Icon name="lucide:download" class="h-3.5 w-3.5" aria-hidden="true" />
-            PDF
+            <Icon name="lucide:file-text" class="h-3.5 w-3.5" aria-hidden="true" />
+            Documento
           </span>
           <span class="mt-1 font-serif text-base font-semibold leading-snug text-gray-900 group-hover:text-py-azul sm:text-lg">Acta de Constitución</span>
           <span class="sr-only">(abre en una pestaña nueva)</span>

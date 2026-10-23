@@ -167,6 +167,9 @@ const restaurarNotas = (html: string, notas: { texto: string }[]): string => {
 /** Marcador temporal para no perder las fórmulas durante el saneado. */
 const MARCA_FORMULA = /@@IPPSE_FORMULA_(\d+)@@/g;
 
+/** Marcador temporal de un "\$" (signo de pesos literal, no fórmula). */
+const MARCA_DOLAR = '@@IPPSE_DOLAR@@';
+
 /** Busca fórmulas $$…$$ (bloque) y $…$ (en línea) y las cambia por marcadores. */
 const extraerFormulas = (html: string, formulas: { tex: string; display: boolean }[]): string => {
   let salida = html.replace(/\$\$([\s\S]+?)\$\$/g, (_todo, tex: string) => {
@@ -520,6 +523,10 @@ export function iniciarVisor(raiz: HTMLElement) {
       limpio = limpio.slice(primerTitulo[0].length).replace(/^\n+/, '');
     }
 
+    // "\$" es un signo de pesos literal (US\$ 1.120): se aparta con un marcador para
+    // que ni marked ni la búsqueda de fórmulas lo tomen como delimitador de KaTeX.
+    limpio = limpio.replace(/\\\$/g, MARCA_DOLAR);
+
     // Notas al pie: se resuelven sobre el Markdown limpio (marcadores) antes de parsear.
     const { markdown: mdConNotas, notas } = procesarNotas(limpio);
     const html = marked.parser(marked.lexer(mdConNotas));
@@ -549,6 +556,10 @@ export function iniciarVisor(raiz: HTMLElement) {
     if (formulas.length > 0) {
       const katex = await cargarOpcional<Katex>(config.cdnKatex);
       contenido.innerHTML = restaurarFormulas(contenido.innerHTML, formulas, katex);
+    }
+
+    if (contenido.innerHTML.includes(MARCA_DOLAR)) {
+      contenido.innerHTML = contenido.innerHTML.replaceAll(MARCA_DOLAR, '$');
     }
 
     // Enlaces e imágenes relativos del repositorio: se resuelven contra su URL cruda.

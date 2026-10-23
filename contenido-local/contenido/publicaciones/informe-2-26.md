@@ -128,8 +128,8 @@ Sería realizada en 2 etapas, con financiamiento de la [EBY](https://eby.gov.py/
 
 | Etapa | Alcance | Costo directo | Costo unitario |
 |---|---|---|---|
-| Primera | 3 unidades de 155 MW (operan sin Embalse Compensador) | US$ 1.120 millones | 2.400 US$/kW |
-| Segunda | 7 unidades de 155 MW (requiere Embalse Compensador previo: ITACORÁ-ITATÍ o ITAYBATÉ) | US$ 2.600 millones | 2.400 US$/kW |
+| Primera | 3 unidades de 155 MW (operan sin Embalse Compensador) | US\$ 1.120 millones | 2.400 US\$/kW |
+| Segunda | 7 unidades de 155 MW (requiere Embalse Compensador previo: ITACORÁ-ITATÍ o ITAYBATÉ) | US\$ 2.600 millones | 2.400 US\$/kW |
 
 **Cronograma estimado:** plazo total 14 años
 *   **2027 – 2031 (5 años):** Negociaciones con Argentina, estudios varios (factibilidad, impacto social y ambiental, etc.), licencias, ingeniería, forma de construcción y financiamiento, elaboración PBC, licitaciones, adjudicaciones y contratos.
@@ -165,7 +165,7 @@ Su realización está relacionada con:
 *   Actualización/realización de estudios avanzados de factibilidad técnica, económica, financiera y ambiental para el emprendimiento.
 *   Definición de la forma para construir y financiar la obra: estatal, privado (concesión), asociación público-privada, etc.
 
-**Costo estimado:** US$ 5.000 millones costo directo; 3.000 US$/kW instalado; LCOE 38 USD/MWh sin regalías (*Levelized Cost of Energy* – Costo nivelado de la Energía). El financiamiento dependerá del método para realizar el emprendimiento.
+**Costo estimado:** US\$ 5.000 millones costo directo; 3.000 US\$/kW instalado; LCOE 38 USD/MWh sin regalías (*Levelized Cost of Energy* – Costo nivelado de la Energía). El financiamiento dependerá del método para realizar el emprendimiento.
 
 **Cronograma estimado:** plazo total 14 años
 *   **2027 – 2032 (6 años):** Negociaciones con Argentina, estudios varios (factibilidad, impacto social y ambiental, etc.), licencias, ingeniería, forma de construcción y financiamiento, elaboración PBC, licitaciones, adjudicaciones y contratos.
@@ -204,7 +204,7 @@ Su realización está relacionada con:
 *   Revisión del “Acuerdo Tripartito entre Paraguay, Brasil y Argentina referente al aprovechamiento hidroeléctrico del Río Paraná”, suscrito el 19.10.1979, por el cual se establecieron condiciones para la construcción y operación de la futura CH CORPUS y para la operación de la CH ITAIPU, a fin de optimizar la producción de ésta, y al mismo tiempo, la navegación del río Paraná aguas abajo.
 *   Actualización de estudios y negociaciones sobre los efectos del embalse de la CH CORPUS sobre el salto y la operación de CH ITAIPU y CH ACARAY.
 
-**Costo estimado:** US\$ 7.500 millones costo directo; 2.600 US$/kW instalado; LCOE 33 USD/MWh sin regalías (*Levelized Cost of Energy* – Costo nivelado de la Energía). El financiamiento dependerá del método para realizar el emprendimiento.
+**Costo estimado:** US\$ 7.500 millones costo directo; 2.600 US\$/kW instalado; LCOE 33 USD/MWh sin regalías (*Levelized Cost of Energy* – Costo nivelado de la Energía). El financiamiento dependerá del método para realizar el emprendimiento.
 
 **Cronograma estimado:** plazo total 13 años
 *   **2027 – 2032 (6 años):** Negociaciones con Argentina y con Brasil, levantamiento Plebiscito de Misiones, estudios varios (factibilidad, impacto social y ambiental, etc.), licencias, ingeniería, forma de construcción y financiamiento, elaboración PBC, licitaciones, adjudicaciones y contratos.
@@ -234,7 +234,7 @@ Su realización está relacionada con:
 | Operación | Central de “Punta” |
 | Ubicación | entre el Vertedero y la Subestación Margen Derecha, por motivos de construcción |
 
-**Costo estimado:** US$ 1.600 millones costo directo; 1.150 US$/kW instalado. El financiamiento será definido por las Altas Partes.
+**Costo estimado:** US\$ 1.600 millones costo directo; 1.150 US\$/kW instalado. El financiamiento será definido por las Altas Partes.
 
 **Cronograma estimado:** plazo total 10 años
 *   **2027 – 2031 (5 años):** Negociaciones con Brasil y con Argentina, estudios varios (factibilidad, impacto social y ambiental, etc.), licencias, ingeniería, forma de construcción y financiamiento, elaboración PBC, licitaciones, adjudicaciones y contratos.
@@ -255,10 +255,10 @@ Así, y hasta tanto, no puede ser considerada como alternativa real para dispone
 
 | Emprendimiento | Potencia | Energía | Inversión (costo directo) | Costo unitario | LCOE | Plazo | Para el Paraguay |
 |---|---|---|---|---|---|---|---|
-| Ampliación YACYRETÁ | 1.550 MW (+10 máq.) | 1.200 GWh/año | US$ 1.120 + 2.600 M | 2.400 US$/kW | — | 14 años | 775 MW |
-| ITACORÁ – ITATÍ | 1.660 MW | 11.300 GWh/año | US$ 5.000 M | 3.000 US$/kW | 38 USD/MWh | 14 años | 830 MW |
-| CORPUS CHRISTI (PINDOÍ) | 2.880 MW | 20.175 GWh/año | US$ 7.500 M | 2.600 US$/kW | 33 USD/MWh | 13 años | 1.440 MW |
-| Ampliación ITAIPU | 1.400 MW | 3.000 GWh/año | US$ 1.600 M | 1.150 US$/kW | — | 10 años | 700 MW |
+| Ampliación YACYRETÁ | 1.550 MW (+10 máq.) | 1.200 GWh/año | US\$ 1.120 + 2.600 M | 2.400 US\$/kW | — | 14 años | 775 MW |
+| ITACORÁ – ITATÍ | 1.660 MW | 11.300 GWh/año | US\$ 5.000 M | 3.000 US\$/kW | 38 USD/MWh | 14 años | 830 MW |
+| CORPUS CHRISTI (PINDOÍ) | 2.880 MW | 20.175 GWh/año | US\$ 7.500 M | 2.600 US\$/kW | 33 USD/MWh | 13 años | 1.440 MW |
+| Ampliación ITAIPU | 1.400 MW | 3.000 GWh/año | US\$ 1.600 M | 1.150 US\$/kW | — | 10 años | 700 MW |
 
 Los plazos de habilitación se ubican entre 10 y 14 años: quedan por fuera del “lapso crítico 2028-2030”.
 
