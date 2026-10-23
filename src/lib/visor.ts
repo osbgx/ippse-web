@@ -437,6 +437,21 @@ export function iniciarVisor(raiz: HTMLElement) {
     const diagramas = contenido.querySelectorAll<HTMLElement>('.mermaid');
     if (!mermaid || diagramas.length === 0) return;
 
+    // La línea de "hoy" no aporta en un cronograma proyectado y tapa el primer
+    // año del eje: se oculta salvo que el autor la pida explícitamente.
+    diagramas.forEach((d) => {
+      const texto = d.textContent ?? '';
+      if (/^\s*gantt\b/.test(texto) && !/^\s*todayMarker\b/m.test(texto)) {
+        d.textContent = texto.replace(/^(\s*gantt\b.*)$/m, '$1\n    todayMarker off');
+      }
+    });
+
+    // Mermaid mide el ancho del Gantt en un contenedor temporal (y le da ~300 px),
+    // lo que encima etiquetas, años y títulos. Se le pasa el ancho real del
+    // documento, con un mínimo legible: en móviles el diagrama se desplaza dentro
+    // de su recuadro en vez de achicarse hasta ser ilegible.
+    const anchoGantt = Math.max(diagramas[0].clientWidth - 32, 760);
+
     mermaid.initialize({
       startOnLoad: false,
       securityLevel: 'strict',
@@ -448,11 +463,35 @@ export function iniciarVisor(raiz: HTMLElement) {
         primaryTextColor: '#111827',
         lineColor: '#6b7280',
         fontSize: '14px',
+        // Gantt: grilla tenue y bandas de sección uniformes.
+        gridColor: '#e5e7eb',
+        sectionBkgColor: '#f8fafc',
+        altSectionBkgColor: '#ffffff',
+        sectionBkgColor2: '#f8fafc',
+      },
+      gantt: {
+        useWidth: anchoGantt,
+        // Columna de secciones a la izquierda y margen a la derecha para que los
+        // nombres de tareas que no caben en su barra se escriban a su lado.
+        leftPadding: 190,
+        rightPadding: 140,
+        barHeight: 26,
+        barGap: 8,
+        topPadding: 56,
+        fontSize: 13,
+        sectionFontSize: 14,
+        gridLineStartPadding: 40,
       },
     });
 
     try {
       await mermaid.run({ nodes: [...diagramas] });
+      // Mermaid deja el Gantt con width="100%": se fija su ancho real para que en
+      // móviles se desplace (ver global.css) en lugar de encogerse.
+      contenido.querySelectorAll<SVGSVGElement>('.mermaid svg[aria-roledescription="gantt"]').forEach((svg) => {
+        const ancho = svg.viewBox.baseVal?.width;
+        if (ancho) svg.style.width = `${ancho}px`;
+      });
     } catch (error) {
       // Si un diagrama tiene un error de sintaxis, se deja visible el código.
       console.warn('[visor] No se pudo dibujar un diagrama Mermaid', error);

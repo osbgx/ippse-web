@@ -7,7 +7,7 @@ import {
   baseDocumentos, carpetaPublicaciones, cdnMarked, cdnDomPurify,
   cdnMermaid, cdnKatex, cdnKatexCss,
 } from '../data/visor';
-import { urlRepo } from '../data/fuenteDocumentos';
+import { urlBaseFuente } from '../data/fuenteDocumentos';
 
 const publicacionesOrdenadas = await getPublicaciones();
 
@@ -29,7 +29,7 @@ const metadatos = Object.fromEntries(
 
 const config = {
   baseDocumentos: baseDocumentos(),
-  urlGitHub: `${urlRepo}/blob/${import.meta.env.PUBLIC_DOCS_RAMA ?? 'main'}`,
+  urlGitHub: urlBaseFuente,
   carpetaPublicaciones,
   // Ruta del visor como texto: una función no sobrevive a JSON.stringify.
   urlVisor: conBase('/visor/'),

@@ -13,8 +13,10 @@
 // sitio vacío en silencio.
 
 import type { Loader, LoaderContext } from 'astro/loaders';
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
 import { fijarCommitDocumentos } from '../data/commitDocumentos';
-import { carpetaPublicaciones, repoDocumentos, ramaDocumentos } from '../data/fuenteDocumentos';
+import { carpetaLocal, carpetaPublicaciones, modoLocal, repoDocumentos, ramaDocumentos } from '../data/fuenteDocumentos';
 
 interface OpcionesLoader {
   /** Repositorio en formato "usuario/repositorio". */
@@ -60,6 +62,41 @@ export function cargadorPublicaciones(opciones: OpcionesLoader): Loader {
     load: async (contexto: LoaderContext) => {
       const { store, logger, parseData, renderMarkdown, generateDigest } = contexto;
       const { repo, rama, carpeta } = opciones;
+
+      // Modo local (temporal): leer los .md de `contenido-local/` en vez de GitHub.
+      if (modoLocal) {
+        const dir = path.resolve(process.cwd(), carpetaLocal, carpeta);
+        let entradas: string[];
+        try {
+          entradas = (await fs.readdir(dir)).filter((f) => f.endsWith('.md') && !/^[._]/.test(f));
+        } catch (error) {
+          throw new Error(
+            `Modo local activo (PUBLIC_DOCS_LOCAL) pero no se pudo leer ${dir}.\n` +
+              `Detalle: ${error instanceof Error ? error.message : String(error)}`,
+          );
+        }
+
+        logger.info(`Modo local: leyendo ${entradas.length} publicaciones de ${dir}`);
+        store.clear();
+
+        for (const nombre of entradas) {
+          const id = nombre.replace(/\.md$/, '');
+          const contenido = await fs.readFile(path.join(dir, nombre), 'utf8');
+          const cuerpo = quitarFrontmatter(contenido);
+          const datos = await parseData({ id, data: extraerFrontmatter(contenido) as Record<string, unknown> });
+          const renderizado = await renderMarkdown(cuerpo);
+          store.set({
+            id,
+            data: datos,
+            body: cuerpo,
+            rendered: renderizado,
+            digest: generateDigest(contenido),
+          });
+        }
+
+        logger.info(`Publicaciones cargadas (local): ${entradas.length}`);
+        return;
+      }
 
       // 1. Fijar el commit: todas las URLs del sitio (visor, PDFs, imágenes) usan
       //    este SHA en vez del nombre de la rama. Son URLs inmutables, así la CDN

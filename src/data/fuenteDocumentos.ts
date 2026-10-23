@@ -27,6 +27,21 @@ import { commitDocumentos } from './commitDocumentos';
 const leer = (valor: string | undefined, porDefecto: string): string =>
   valor && valor.trim() !== '' ? valor.trim() : porDefecto;
 
+/**
+ * MODO LOCAL (temporal, para desarrollo):
+ * Con `PUBLIC_DOCS_LOCAL=1` el contenido se lee de la carpeta `contenido-local/`
+ * del propio proyecto (sincronizada a `public/contenido-local/`), en vez del
+ * repositorio de GitHub. Sirve para ver los cambios sin commitear ni esperar
+ * al build remoto. Para volver a GitHub, basta con no definir la variable.
+ */
+export const modoLocal = leer(import.meta.env.PUBLIC_DOCS_LOCAL, '') !== '';
+
+/** Carpeta del proyecto que contiene el contenido en modo local. */
+export const carpetaLocal = 'contenido-local';
+
+/** Ruta pública (con base) donde se sirve el contenido local. */
+export const rutaPublicaLocal = '/contenido-local';
+
 /** Repositorio de contenido, en formato "usuario/repositorio". */
 export const repoDocumentos = leer(import.meta.env.PUBLIC_DOCS_REPO, 'osbgx/ippse-documentos');
 
@@ -51,23 +66,37 @@ export const refDocumentos = (): string => commitDocumentos() ?? ramaDocumentos;
 
 /**
  * Base para leer archivos crudos:
- *   https://raw.githubusercontent.com/<repo>/<sha-o-rama>
+ *   · Remoto: https://raw.githubusercontent.com/<repo>/<sha-o-rama>
+ *   · Local:  <base del sitio>/contenido-local
  *
  * Es una función (no una constante) porque el SHA recién se conoce cuando corre
  * el loader de publicaciones, antes de renderizar las páginas.
  */
-export const baseDocumentos = (): string =>
-  `https://raw.githubusercontent.com/${repoDocumentos}/${refDocumentos()}`;
+export const baseDocumentos = (): string => {
+  if (modoLocal) {
+    // Se resuelve con la base del sitio para que funcione igual en /ippse-web/.
+    return `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${carpetaLocal}`;
+  }
+  return `https://raw.githubusercontent.com/${repoDocumentos}/${refDocumentos()}`;
+};
 
 /** Ruta dentro del repo crudo, p. ej. .../contenido/publicaciones/informe-2-26.md */
 export const urlCruda = (rutaEnRepo: string) => `${baseDocumentos()}/${rutaEnRepo}`;
 
-/** Página en GitHub de un archivo (enlace "Ver fuente"). */
+/** Página en GitHub de un archivo (enlace "Ver fuente"). En local no aplica. */
 export const urlEnGitHub = (rutaEnRepo: string) =>
-  `https://github.com/${repoDocumentos}/blob/${ramaDocumentos}/${rutaEnRepo}`;
+  `${baseDocumentos()}/${rutaEnRepo}`;
 
-/** Página del repositorio en GitHub. */
-export const urlRepo = `https://github.com/${repoDocumentos}`;
+/**
+ * Base del enlace "Ver fuente". En GitHub apunta al visor de archivos del
+ * repositorio; en modo local, al propio archivo servido por el sitio.
+ */
+export const urlBaseFuente = modoLocal
+  ? baseDocumentos()
+  : `https://github.com/${repoDocumentos}/blob/${ramaDocumentos}`;
+
+/** Página del repositorio en GitHub (en modo local, el contenido propio). */
+export const urlRepo = modoLocal ? baseDocumentos() : `https://github.com/${repoDocumentos}`;
 
 /**
  * Resuelve la ruta de un PDF declarada en el frontmatter (`pdf:`), que puede ser:

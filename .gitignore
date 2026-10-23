@@ -3,3 +3,7 @@ dist/
 .astro/
 .env
 .env.local
+
+# Modo local temporal (contenido sincronizado desde contenido-local/).
+# No se versiona como parte del sitio: el contenido real vive en su repositorio.
+public/contenido-local/

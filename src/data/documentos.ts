@@ -14,7 +14,7 @@ export interface DocumentoPdf {
 export const pdfConstitucion: DocumentoPdf = {
   href: conBase('/documentos/constitucion-ippse.pdf'),
   titulo: 'Constitución del IPPSE — Acta fundacional',
-  peso: '5,9 MB',
+  peso: '5,7 MB',
 };
 
 /** Informe Técnico Nº 2/26 (Parte II). */

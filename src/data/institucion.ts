@@ -117,8 +117,8 @@ export interface EnlaceRapido {
 }
 
 export const enlacesRapidos: EnlaceRapido[] = [
+  { titulo: 'Informes técnicos', descripcion: 'Diagnósticos, propuestas y ensayos del IPPSE.', href: conBase('/publicaciones/') },
   { titulo: 'Constitución', descripcion: 'Acta y documento fundacional del Instituto (PDF).', href: conBase('/documentos/constitucion-ippse.pdf'), archivo: true },
   { titulo: 'Estatutos', descripcion: 'Organización, autoridades y membresía.', href: conBase('/institucional/#estatutos') },
   { titulo: 'Código de Ética', descripcion: 'Principios de conducta de los miembros.', href: conBase('/institucional/#código-de-ética') },
-  { titulo: 'Informes técnicos', descripcion: 'Diagnósticos, propuestas y ensayos del IPPSE.', href: conBase('/publicaciones/') },
 ];
